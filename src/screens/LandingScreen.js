@@ -53,6 +53,11 @@ function reducer(state, action){
                 input_data : state.input_data.trim(),
                 total_characters : state.input_data.trim().length
             }
+        case 'theme':
+            return{
+                ...state,
+                dark_mode : !state.dark_mode
+            }
         default:
             return {...state}
     }
@@ -80,20 +85,30 @@ function LandingScreen(){
         }
     }
 
+    function themeHandler(){
+        dispatch({type:"theme"})
+    }
+
     return(
-        <div>
+        <div id='container' className={state.dark_mode && 'dark-mode'}>
+            <div id='theme-cntrl'>
+                <div id='toggle-conainer' onClick={themeHandler}>
+                    <div id='toggle-switch' className={state.dark_mode ? 'toggle-switch-dark-mode' : "toggle-switch-light-mode"}></div>
+                </div>
+                <p>Enable {state.dark_mode ? "light" : "dark"} mode</p>
+            </div>
             <header>
                 <h1>TextUtis - Word Counter, Charecter Counter, Remove Extra Space</h1>
             </header>
-            <div>
+            <div id='input-container'>
                 <p>Enter Your Text Here:</p>
                 <textarea value={state.input_data} onChange={inputChangeHandler}/>
-                <div onClick={clickHandler}>
-                    <button>Convert Uppercase</button>
-                    <button>Convert Lowercase</button>
-                    <button>Clear Text</button>
-                    <button>Copy To Clipboard</button>
-                    <button>Remove Extra Space</button>
+                <div onClick={clickHandler} id='btn-container'>
+                    <button className='case-change-btn'>Convert Uppercase</button>
+                    <button className='case-change-btn'>Convert Lowercase</button>
+                    <button className='clear-btn'>Clear Text</button>
+                    <button className='copy-btn'>Copy To Clipboard</button>
+                    <button className='remove-space-btn'>Remove Extra Space</button>
                 </div>
             </div>
             <div>
@@ -102,9 +117,9 @@ function LandingScreen(){
                 <p>Number of charecters : {state.total_characters} </p>
                 <p>Reading Time: {state.total_time_req_to_read} </p>
             </div>
-            <div>
+            <div id='output-container'>
                 <h3>Preview Document</h3>
-                <textarea value={state.input_data}/>
+                <textarea value={state.input_data} readOnly/>
             </div>
         </div>
     )
